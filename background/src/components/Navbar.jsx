@@ -1,7 +1,16 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  return <div>Can you see me?</div>;
+  return (
+    <>
+      <ul>
+        <li>
+          <Link to="/">Slime</Link>
+        </li>
+      </ul>
+    </>
+  );
 };
 
 export default Navbar;
