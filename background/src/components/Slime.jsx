@@ -6,13 +6,13 @@ const Slime = () => {
 
   useEffect(() => {
     const starfield = starfieldRef.current;
-    const starCount = 1000; // Number of stars
+    const starCount = 800; // Number of stars
 
-    // Function to make stars float around slowly
+    // Function to make stars float around smoothly
     const floatStar = (star) => {
       const moveStar = () => {
-        const deltaX = Math.random() * 2 - 1; // Random value between -1 and 1
-        const deltaY = Math.random() * 2 - 1; // Random value between -1 and 1
+        const deltaX = (Math.random() * 2 - 1) * 0.5; // Smaller random value for smoother movement
+        const deltaY = (Math.random() * 2 - 1) * 0.5; // Smaller random value for smoother movement
 
         const currentX = parseFloat(star.style.left) || 0;
         const currentY = parseFloat(star.style.top) || 0;
@@ -33,8 +33,8 @@ const Slime = () => {
         star.style.left = `${newX}px`;
         star.style.top = `${newY}px`;
 
-        // Call moveStar again after a short delay to create continuous movement
-        setTimeout(moveStar, 50);
+        // Use requestAnimationFrame for smooth movement
+        requestAnimationFrame(moveStar);
       };
 
       moveStar();
@@ -44,14 +44,14 @@ const Slime = () => {
     const createStar = () => {
       const star = document.createElement("div");
       star.classList.add("star");
-      star.style.width = `${Math.random() * 7 + 2}px`; // Random width between 2-9px
+      star.style.width = `${Math.random() * 10 + 2}px`; // Random width between 2-12px
       star.style.height = star.style.width; // Keep it a circle
       star.style.top = `${Math.random() * window.innerHeight}px`; // Random vertical position
       star.style.left = `${Math.random() * window.innerWidth}px`; // Random horizontal position
       starfield.appendChild(star);
       stars.push(star);
 
-      // Start the random floating animation for this star
+      // Start the smooth floating animation for this star
       floatStar(star);
     };
 
@@ -72,7 +72,7 @@ const Slime = () => {
         const deltaX = mouseX - starX;
         const deltaY = mouseY - starY;
         const distance = Math.sqrt(deltaX ** 2 + deltaY ** 2);
-        const attractionSpeed = 30; // Speed factor to control attraction
+        const attractionSpeed = 20; // Reduced speed factor for smoother attraction
 
         // Calculate new position towards mouse
         const moveX = (deltaX / distance) * attractionSpeed;
@@ -83,12 +83,43 @@ const Slime = () => {
       });
     };
 
-    // Add event listener for mouse movement
+    // Handle mouse click to repulse nearby stars
+    const handleMouseClick = (event) => {
+      const mouseX = event.clientX;
+      const mouseY = event.clientY;
+      const repulsionRadius = 100; // Radius of effect for repulsion
+
+      stars.forEach((star) => {
+        // Calculate distance from mouse to star
+        const starX = star.offsetLeft + star.offsetWidth / 2;
+        const starY = star.offsetTop + star.offsetHeight / 2;
+        const deltaX = starX - mouseX;
+        const deltaY = starY - mouseY;
+        const distance = Math.sqrt(deltaX ** 2 + deltaY ** 2);
+
+        // Only apply repulsion if within repulsion radius
+        if (distance < repulsionRadius) {
+          const repulsionDistance = 50; // Distance factor to control repulsion
+
+          // Calculate new position away from mouse
+          const moveX = (deltaX / distance) * repulsionDistance;
+          const moveY = (deltaY / distance) * repulsionDistance;
+
+          // Apply movement by updating the star's position
+          star.style.left = `${star.offsetLeft + moveX}px`;
+          star.style.top = `${star.offsetTop + moveY}px`;
+        }
+      });
+    };
+
+    // Add event listeners for mouse movement and click
     window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("click", handleMouseClick);
 
     // Cleanup on component unmount
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("click", handleMouseClick);
     };
   }, []);
 
