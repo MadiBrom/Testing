@@ -23,7 +23,7 @@ const Bubbles = () => {
     };
   };
 
-  // Function to get a random pastel gradient
+  // Function to get a random linear gradient in pastel colors
   const getRandomGradient = () => {
     const pastelColors = [
       "#FFB3BA", // Light Pink
@@ -88,9 +88,11 @@ const Bubbles = () => {
             left: `${bubble.position.left}px`,
             width: `${bubble.size}px`,
             height: `${bubble.size}px`,
+            border: `4px solid transparent`,
+            borderRadius: "50%",
+            background: bubble.gradient, // Apply the gradient as background
             position: "absolute",
           }}
-          data-gradient={bubble.gradient}
         ></button>
       ))}
     </div>
