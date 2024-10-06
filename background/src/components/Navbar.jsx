@@ -11,9 +11,9 @@ const Navbar = () => {
         <li>
           <Link to="/buttons">Buttons</Link>
         </li>
-        {/* <li>
+        <li>
           <Link to="/bubbles">Bubbles</Link>
-        </li> */}
+        </li>
       </ul>
     </>
   );
