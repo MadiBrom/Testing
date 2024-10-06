@@ -23,7 +23,7 @@ const Bubbles = () => {
     };
   };
 
-  // Function to get a random pastel gradient
+  // Function to get a random linear gradient in pastel colors
   const getRandomGradient = () => {
     const pastelColors = [
       "#FFB3BA", // Light Pink
@@ -44,14 +44,14 @@ const Bubbles = () => {
     return `linear-gradient(${angle}deg, ${color1}, ${color2})`;
   };
 
-  // Function to handle the button click: fade out, teleport, then fade in
+  // Function to handle the bubble click: fade out, teleport, then fade in
   const handleClick = (id) => {
-    const button = document.querySelector(`.${id}`);
-    if (button) {
+    const bubbleElement = document.querySelector(`.${id}`);
+    if (bubbleElement) {
       // Add fade-out animation
-      button.classList.add("fade-out");
+      bubbleElement.classList.add("fade-out");
 
-      // After the fade-out, move the button to a new position while it is invisible
+      // After the fade-out, move the bubble to a new position while it is invisible
       setTimeout(() => {
         setBubbles((prevBubbles) =>
           prevBubbles.map((bubble) =>
@@ -65,33 +65,41 @@ const Bubbles = () => {
         );
 
         // Remove fade-out class and add fade-in class for reappearance
-        button.classList.remove("fade-out");
-        button.classList.add("fade-in");
+        bubbleElement.classList.remove("fade-out");
+        bubbleElement.classList.add("fade-in");
 
         // Remove the fade-in class after animation completes
         setTimeout(() => {
-          button.classList.remove("fade-in");
+          bubbleElement.classList.remove("fade-in");
         }, 600);
       }, 600); // Duration matches the fade-out animation duration
     }
   };
 
   return (
-    <div className="shapes-container-bubbles">
+    <div className="shapes-container-pops">
       {bubbles.map((bubble) => (
-        <button
+        <div
           key={bubble.id}
-          className={`shape-button-bubbles ${bubble.id}`}
+          className={`bubble-wrapper ${bubble.id}`}
           onClick={() => handleClick(bubble.id)}
           style={{
             top: `${bubble.position.top}px`,
             left: `${bubble.position.left}px`,
-            width: `${bubble.size}px`,
-            height: `${bubble.size}px`,
+            width: `${bubble.size + 8}px`, // Add 8px to include border thickness
+            height: `${bubble.size + 8}px`,
             position: "absolute",
+            "--gradient": bubble.gradient, // Set the gradient as a CSS variable
           }}
-          data-gradient={bubble.gradient}
-        ></button>
+        >
+          <div
+            className="bubble-inner"
+            style={{
+              width: `${bubble.size}px`,
+              height: `${bubble.size}px`,
+            }}
+          ></div>
+        </div>
       ))}
     </div>
   );
