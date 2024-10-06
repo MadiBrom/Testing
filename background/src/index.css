@@ -1,6 +1,7 @@
 #root {
   background-color: black;
 }
+
 body {
   margin: 0;
   min-height: 100vh; /* Ensure it covers the viewport height */
@@ -9,7 +10,7 @@ body {
   font-family: "Arial", sans-serif;
 }
 
-.starfield {
+.bubblefield {
   position: fixed;
   top: 0;
   left: 0;
@@ -19,7 +20,7 @@ body {
   pointer-events: none;
 }
 
-.star {
+.bubble {
   position: absolute;
   background-color: rgba(0, 128, 0, 0.8); /* Opaque green color */
   border-radius: 50%;
@@ -28,7 +29,7 @@ body {
   height: 5px;
 }
 
-.star.attracted {
+.bubble.attracted {
   /* Styles can be adjusted if you want a specific effect when they are attracted */
   transform: scale(1.2); /* Slightly enlarge when attracted */
 }
@@ -50,4 +51,32 @@ body {
   100% {
     transform: translate(0, 0);
   }
+}
+
+/* Navbar CSS */
+ul {
+  list-style-type: none; /* Remove bullets from list */
+  margin: 0; /* Remove default margin */
+  padding: 0; /* Remove default padding */
+  background-color: #33333331; /* Dark background for navbar */
+  overflow: hidden; /* Ensure content doesn't overflow */
+  display: flex; /* Flex layout for horizontal alignment */
+  justify-content: space-around; /* Space links evenly */
+}
+
+li {
+  display: inline; /* Ensure list items are inline */
+}
+
+a {
+  display: block; /* Allow clickable area for entire link */
+  color: white; /* Set link text color to white */
+  text-align: center; /* Center-align text */
+  padding: 14px 20px; /* Add padding for spacing */
+  text-decoration: none; /* Remove underline from links */
+}
+
+a:hover {
+  background-color: #575757; /* Change background color on hover */
+  transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
