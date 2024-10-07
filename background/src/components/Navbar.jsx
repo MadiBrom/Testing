@@ -14,6 +14,9 @@ const Navbar = () => {
         <li>
           <Link to="/bubbles">Bubbles</Link>
         </li>
+        <li>
+          <Link to="/birds">Birds</Link>
+        </li>
       </ul>
     </>
   );
