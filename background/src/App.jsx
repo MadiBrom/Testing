@@ -5,6 +5,7 @@ import Navbar from "./components/Navbar";
 import Buttons from "./components/buttons/Buttons";
 import Bubbles from "./components/bubbles/Bubbles";
 import Birds from "./components/Birds";
+import MoveBox from "./components/box/MoveBox";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/buttons" element={<Buttons />} />
         <Route path="/bubbles" element={<Bubbles />} />
         <Route path="/birds" element={<Birds />} />
+        <Route path="/move" element={<MoveBox />} />
       </Routes>
     </div>
   );

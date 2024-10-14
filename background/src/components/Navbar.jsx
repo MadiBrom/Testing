@@ -17,6 +17,9 @@ const Navbar = () => {
         <li>
           <Link to="/birds">Birds</Link>
         </li>
+        <li>
+          <Link to="/move">Move the Box</Link>
+        </li>
       </ul>
     </>
   );
