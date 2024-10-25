@@ -91,3 +91,64 @@ a:hover {
   background-color: #575757; /* Change background color on hover */
   transition: background-color 0.3s; /* Smooth transition for hover effect */
 }
+
+/* Home.css */
+
+.home-container {
+  text-align: center;
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  position: relative;
+  height: 100vh; /* Ensures full page coverage */
+}
+
+h1 {
+  color: #333;
+}
+
+p {
+  font-size: 1.2rem;
+  color: #555;
+}
+
+.fidget-shapes {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.circle {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  position: relative;
+  cursor: grab;
+}
+
+.circle1 {
+  background-color: #fec6c7;
+}
+
+.circle2 {
+  background-color: #a7c7e7;
+}
+
+.circle3 {
+  background-color: #f4f6a7;
+}
+
+.explore-button {
+  margin-top: 2rem;
+  padding: 10px 20px;
+  font-size: 1.2rem;
+  background-color: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.explore-button:hover {
+  background-color: #45a049;
+}
