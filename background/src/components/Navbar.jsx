@@ -2,10 +2,17 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [fidgetsDropdownOpen, setFidgetsDropdownOpen] = useState(false);
+  const [visualsDropdownOpen, setVisualsDropdownOpen] = useState(false);
 
-  const toggleDropdown = () => {
-    setDropdownOpen(!dropdownOpen);
+  const toggleFidgetsDropdown = () => {
+    setFidgetsDropdownOpen(!fidgetsDropdownOpen);
+    setVisualsDropdownOpen(false); // Close the other dropdown
+  };
+
+  const toggleVisualsDropdown = () => {
+    setVisualsDropdownOpen(!visualsDropdownOpen);
+    setFidgetsDropdownOpen(false); // Close the other dropdown
   };
 
   return (
@@ -34,7 +41,7 @@ const Navbar = () => {
         </li>
         <li style={{ position: "relative" }}>
           <button
-            onClick={toggleDropdown}
+            onClick={toggleFidgetsDropdown}
             style={{
               background: "none",
               border: "none",
@@ -46,7 +53,7 @@ const Navbar = () => {
           >
             Fidgets ▼
           </button>
-          {dropdownOpen && (
+          {fidgetsDropdownOpen && (
             <ul
               style={{
                 position: "absolute",
@@ -108,7 +115,7 @@ const Navbar = () => {
         </li>
         <li style={{ position: "relative" }}>
           <button
-            onClick={toggleDropdown}
+            onClick={toggleVisualsDropdown}
             style={{
               background: "none",
               border: "none",
@@ -120,7 +127,7 @@ const Navbar = () => {
           >
             Visuals ▼
           </button>
-          {dropdownOpen && (
+          {visualsDropdownOpen && (
             <ul
               style={{
                 position: "absolute",
@@ -142,7 +149,7 @@ const Navbar = () => {
                   to="/ocean"
                   style={{ color: "#fff", textDecoration: "none" }}
                 >
-                  Buttons
+                  Ocean
                 </Link>
               </li>
             </ul>
