@@ -11,22 +11,18 @@ const Birds = () => {
     // Function to make shapes float around smoothly across the whole screen
     const floatBubble = (bubble) => {
       const moveBubble = () => {
-        // Add random small adjustments to create floating effect
         const deltaX = (Math.random() * 2 - 1) * 0.2;
         const deltaY = (Math.random() * 2 - 1) * 0.2;
 
-        // Update velocities based on small random deltas for natural movement
         bubble.velocityX += deltaX;
         bubble.velocityY += deltaY;
 
-        // Apply some damping to reduce speed over time for a smoother effect
         bubble.velocityX *= 0.98;
         bubble.velocityY *= 0.98;
 
         let newX = parseFloat(bubble.style.left) + bubble.velocityX || 0;
         let newY = parseFloat(bubble.style.top) + bubble.velocityY || 0;
 
-        // Wrap around if out of bounds
         if (newX < 0) newX = window.innerWidth;
         if (newX > window.innerWidth) newX = 0;
         if (newY < 0) newY = window.innerHeight;
@@ -41,37 +37,28 @@ const Birds = () => {
       moveBubble();
     };
 
-    // Function to create a bubble element
     const createBubble = () => {
       const bubble = document.createElement("div");
-
-      const shapeTypes = ["bubble", "square", "triangle"];
-      const shapeClass =
-        shapeTypes[Math.floor(Math.random() * shapeTypes.length)];
-      bubble.classList.add(shapeClass);
+      bubble.classList.add("bubble");
 
       bubble.style.width = `${Math.random() * 10 + 5}px`;
       bubble.style.height = bubble.style.width;
       bubble.style.top = `${Math.random() * window.innerHeight}px`;
       bubble.style.left = `${Math.random() * window.innerWidth}px`;
 
-      // Set initial velocity to zero
       bubble.velocityX = 0;
       bubble.velocityY = 0;
 
       bubblefield.appendChild(bubble);
       bubbles.push(bubble);
 
-      // Start floating animation for this bubble
       floatBubble(bubble);
     };
 
-    // Create initial bubbles
     for (let i = 0; i < bubbleCount; i++) {
       createBubble();
     }
 
-    // Handle mouse movement to attract bubbles
     const handleMouseMove = (event) => {
       const mouseX = event.clientX;
       const mouseY = event.clientY;
@@ -82,21 +69,19 @@ const Birds = () => {
         const deltaX = mouseX - bubbleX;
         const deltaY = mouseY - bubbleY;
         const distance = Math.sqrt(deltaX ** 2 + deltaY ** 2);
-        const attractionStrength = 0.1; // Strength factor for the attraction effect
+        const attractionStrength = 0.1;
 
         if (distance > 0) {
-          // Apply attraction force to the bubble's velocity
           bubble.velocityX += (deltaX / distance) * attractionStrength;
           bubble.velocityY += (deltaY / distance) * attractionStrength;
         }
       });
     };
 
-    // Handle mouse click to repulse nearby bubbles
     const handleMouseClick = (event) => {
       const mouseX = event.clientX;
       const mouseY = event.clientY;
-      const repulsionRadius = 200; // Radius for push-away effect
+      const repulsionRadius = 200;
 
       bubbles.forEach((bubble) => {
         const bubbleX = bubble.offsetLeft + bubble.offsetWidth / 2;
@@ -104,21 +89,18 @@ const Birds = () => {
         const deltaX = bubbleX - mouseX;
         const deltaY = bubbleY - mouseY;
         const distance = Math.sqrt(deltaX ** 2 + deltaY ** 2);
-        const repulsionStrength = 1.5; // Strength factor for the repulsion effect
+        const repulsionStrength = 1.5;
 
         if (distance < repulsionRadius && distance > 0) {
-          // Apply repulsion force to the bubble's velocity
           bubble.velocityX += (deltaX / distance) * repulsionStrength;
           bubble.velocityY += (deltaY / distance) * repulsionStrength;
         }
       });
     };
 
-    // Add event listeners for mouse movement and click
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("click", handleMouseClick);
 
-    // Cleanup on component unmount
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("click", handleMouseClick);
@@ -126,7 +108,27 @@ const Birds = () => {
     };
   }, []);
 
-  return <div ref={bubblefieldRef} className="bubblefield"></div>;
+  return (
+    <div ref={bubblefieldRef} className="bubblefield">
+      <style jsx>{`
+        .bubblefield {
+          position: relative;
+          width: 100%;
+          height: 100vh;
+          overflow: hidden;
+        }
+        .bubble {
+          position: absolute;
+          height: 3px;
+          width: 3px;
+          border-radius: 50%;
+          background: rgba(0, 0, 0, 0.5); /* Soft blue */
+          box-shadow: 0 0 6px rgba(0, 123, 255, 0.7); /* Subtle glow */
+          transition: transform 0.3s ease; /* Smooth transformation */
+        }
+      `}</style>
+    </div>
+  );
 };
 
 export default Birds;

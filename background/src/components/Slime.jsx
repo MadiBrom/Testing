@@ -6,19 +6,21 @@ const Slime = () => {
 
   useEffect(() => {
     const bubblefield = bubblefieldRef.current;
-    const bubbleCount = 300; // Number of shapes
+    const bubbleCount = 300;
 
     // Function to make shapes float around smoothly across the whole screen
     const floatBubble = (bubble) => {
       const moveBubble = () => {
-        const deltaX = (Math.random() * 2 - 1) * 1;
-        const deltaY = (Math.random() * 2 - 1) * 1;
+        // Adjust the randomness to be smaller for slower motion
+        const deltaX = (Math.random() * 2 - 1) * 0.2;
+        const deltaY = (Math.random() * 2 - 1) * 0.2;
 
-        let currentX = parseFloat(bubble.style.left) || 0;
-        let currentY = parseFloat(bubble.style.top) || 0;
+        // Apply damping for smoother, slower float effect
+        bubble.velocityX = (bubble.velocityX || 0) * 0.99 + deltaX;
+        bubble.velocityY = (bubble.velocityY || 0) * 0.99 + deltaY;
 
-        let newX = currentX + deltaX;
-        let newY = currentY + deltaY;
+        let newX = parseFloat(bubble.style.left) + bubble.velocityX;
+        let newY = parseFloat(bubble.style.top) + bubble.velocityY;
 
         // Wrap around if out of bounds
         if (newX < 0) newX = window.innerWidth;
@@ -29,7 +31,6 @@ const Slime = () => {
         bubble.style.left = `${newX}px`;
         bubble.style.top = `${newY}px`;
 
-        // Use requestAnimationFrame for smooth movement
         requestAnimationFrame(moveBubble);
       };
 
@@ -40,7 +41,7 @@ const Slime = () => {
     const createBubble = () => {
       const bubble = document.createElement("div");
 
-      // Randomly assign a class for different shapes
+      // Randomly assign a class for different types, but style them all as circles
       const shapeTypes = ["bubble", "square", "triangle"];
       const shapeClass =
         shapeTypes[Math.floor(Math.random() * shapeTypes.length)];
@@ -54,7 +55,6 @@ const Slime = () => {
       bubblefield.appendChild(bubble);
       bubbles.push(bubble);
 
-      // Start floating animation for this bubble
       floatBubble(bubble);
     };
 
@@ -69,21 +69,19 @@ const Slime = () => {
       const mouseY = event.clientY;
 
       bubbles.forEach((bubble) => {
-        // Calculate direction towards mouse
         const bubbleX = bubble.offsetLeft + bubble.offsetWidth / 2;
         const bubbleY = bubble.offsetTop + bubble.offsetHeight / 2;
         const deltaX = mouseX - bubbleX;
         const deltaY = mouseY - bubbleY;
         const distance = Math.sqrt(deltaX ** 2 + deltaY ** 2);
-        const attractionSpeed = 20; // Adjusted speed factor for smoother attraction
+        const attractionSpeed = 30; // Slower attraction for smoother behavior
 
         if (distance > 0) {
-          // Calculate new position towards mouse
           const moveX = (deltaX / distance) * attractionSpeed;
           const moveY = (deltaY / distance) * attractionSpeed;
 
-          // Apply movement
           bubble.style.transform = `translate(${moveX}px, ${moveY}px)`;
+          bubble.classList.add("attracted");
         }
       });
     };
@@ -92,28 +90,23 @@ const Slime = () => {
     const handleMouseClick = (event) => {
       const mouseX = event.clientX;
       const mouseY = event.clientY;
-      const repulsionRadius = 150; // Radius for push-away effect
+      const repulsionRadius = 300;
 
       bubbles.forEach((bubble) => {
-        // Calculate distance from mouse to bubble
         const bubbleX = bubble.offsetLeft + bubble.offsetWidth / 2;
         const bubbleY = bubble.offsetTop + bubble.offsetHeight / 2;
         const deltaX = bubbleX - mouseX;
         const deltaY = bubbleY - mouseY;
         const distance = Math.sqrt(deltaX ** 2 + deltaY ** 2);
 
-        // Only apply repulsion if within repulsion radius
         if (distance < repulsionRadius && distance > 0) {
-          // Make the repulsion strength inversely proportional to the distance
           const repulsionStrength =
             (repulsionRadius - distance) / repulsionRadius;
-          const repulsionDistance = repulsionStrength * 30;
+          const repulsionDistance = repulsionStrength * 500;
 
-          // Calculate new position away from mouse
           const moveX = (deltaX / distance) * repulsionDistance;
           const moveY = (deltaY / distance) * repulsionDistance;
 
-          // Ensure the new position remains within bounds, wrapping around if necessary
           let newX = bubble.offsetLeft + moveX;
           let newY = bubble.offsetTop + moveY;
 
@@ -128,11 +121,9 @@ const Slime = () => {
       });
     };
 
-    // Add event listeners for mouse movement and click
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("click", handleMouseClick);
 
-    // Cleanup on component unmount
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("click", handleMouseClick);
@@ -140,7 +131,37 @@ const Slime = () => {
     };
   }, []);
 
-  return <div ref={bubblefieldRef} className="bubblefield"></div>;
+  return (
+    <div ref={bubblefieldRef} className="bubblefield">
+      <style jsx>{`
+        .bubblefield {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          z-index: -1;
+          pointer-events: none;
+        }
+
+        .bubble,
+        .square,
+        .triangle {
+          position: absolute;
+          border-radius: 50%;
+          background-color: rgba(173, 216, 230, 0.7);
+          box-shadow: 0 0 8px rgba(173, 216, 230, 0.5);
+          transition: transform 0.2s ease-out;
+        }
+
+        .bubble.attracted,
+        .square.attracted,
+        .triangle.attracted {
+          transform: scale(1.2);
+        }
+      `}</style>
+    </div>
+  );
 };
 
 export default Slime;
