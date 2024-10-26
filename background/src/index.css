@@ -5,30 +5,3 @@ body {
   background-color: black; /* Dark background */
   font-family: "Arial", sans-serif;
 }
-
-ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  background-color: #33333331;
-  overflow: hidden;
-  display: flex;
-  justify-content: space-around;
-}
-
-li {
-  display: inline;
-}
-
-a {
-  display: block;
-  color: white; /* Default link color */
-  text-align: center;
-  padding: 14px 20px;
-  text-decoration: none;
-  transition: color 0.3s; /* Smooth transition for color change */
-}
-
-a:hover {
-  color: #ffd700; /* Changes font color to gold on hover */
-}
