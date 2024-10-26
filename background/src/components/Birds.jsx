@@ -6,7 +6,7 @@ const Birds = () => {
 
   useEffect(() => {
     const bubblefield = bubblefieldRef.current;
-    const bubbleCount = 300;
+    const bubbleCount = 400;
 
     // Function to make shapes float around smoothly across the whole screen
     const floatBubble = (bubble) => {
@@ -119,8 +119,6 @@ const Birds = () => {
         }
         .bubble {
           position: absolute;
-          height: 3px;
-          width: 3px;
           border-radius: 50%;
           background: rgba(0, 0, 0, 0.5); /* Soft blue */
           box-shadow: 0 0 6px rgba(0, 123, 255, 0.7); /* Subtle glow */
