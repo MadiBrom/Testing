@@ -1,13 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Confetti from "react-confetti";
 
 const Home = () => {
-  const [positions, setPositions] = useState({
-    circle1: { x: 0, y: 0 },
-    circle2: { x: 0, y: 0 },
-    circle3: { x: 0, y: 0 },
-  });
-
+  const [circles, setCircles] = useState([]);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
+  const [confettiExplosions, setConfettiExplosions] = useState([]);
+
+  useEffect(() => {
+    // Spawn the initial circle in the center
+    spawnCircle();
+  }, []);
+
+  // Helper function to generate a random hex color
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  };
+
+  const spawnCircle = () => {
+    const centerX = window.innerWidth / 2 - 50;
+    const centerY = window.innerHeight / 2 - 50;
+    const newCircle = {
+      id: `circle${Date.now()}`,
+      x: centerX,
+      y: centerY,
+      color: getRandomColor(),
+    };
+    setCircles((prevCircles) => [...prevCircles, newCircle]);
+  };
 
   const handleDragStart = (e, circleId) => {
     const rect = e.target.getBoundingClientRect();
@@ -20,7 +44,7 @@ const Home = () => {
   };
 
   const handleDragOver = (e) => {
-    e.preventDefault(); // Allows the drop action
+    e.preventDefault();
   };
 
   const handleDrop = (e) => {
@@ -30,10 +54,21 @@ const Home = () => {
     const newX = e.clientX - offset.x;
     const newY = e.clientY - offset.y;
 
-    setPositions((prevPositions) => ({
-      ...prevPositions,
-      [circleId]: { x: newX, y: newY },
-    }));
+    // Update the position of the moved circle
+    setCircles((prevCircles) =>
+      prevCircles.map((circle) =>
+        circle.id === circleId ? { ...circle, x: newX, y: newY } : circle
+      )
+    );
+
+    // Add a new confetti explosion at the drop location
+    setConfettiExplosions((prevExplosions) => [
+      ...prevExplosions,
+      { x: newX + 50, y: newY + 50, id: Date.now() }, // Unique ID for each explosion
+    ]);
+
+    // Spawn a new circle with a random color
+    spawnCircle();
   };
 
   return (
@@ -47,76 +82,46 @@ const Home = () => {
         fontFamily: "Arial, sans-serif",
         height: "100vh",
         position: "relative",
+        overflow: "hidden",
       }}
     >
-      <h1>Welcome to Fidget Haven!</h1>
-      <p>Your one-stop shop for all things fidgety!</p>
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "center",
-          gap: "1rem",
-          marginTop: "2rem",
-        }}
-      >
+      <h1>Discover the Ultimate Interactive Fidget Playground!</h1>
+      <p>Click, drag, and explore endless fidget possibilities.</p>
+
+      {circles.map((circle) => (
         <div
-          id="circle1"
+          key={circle.id}
+          id={circle.id}
           draggable
-          onDragStart={(e) => handleDragStart(e, "circle1")}
+          onDragStart={(e) => handleDragStart(e, circle.id)}
           style={{
             width: "100px",
             height: "100px",
             borderRadius: "50%",
-            backgroundColor: "#FEC6C7",
+            backgroundColor: circle.color,
             position: "absolute",
-            left: `${positions.circle1.x}px`,
-            top: `${positions.circle1.y}px`,
+            left: `${circle.x}px`,
+            top: `${circle.y}px`,
           }}
         ></div>
-        <div
-          id="circle2"
-          draggable
-          onDragStart={(e) => handleDragStart(e, "circle2")}
-          style={{
-            width: "100px",
-            height: "100px",
-            borderRadius: "50%",
-            backgroundColor: "#A7C7E7",
-            position: "absolute",
-            left: `${positions.circle2.x}px`,
-            top: `${positions.circle2.y}px`,
+      ))}
+
+      {confettiExplosions.map((explosion) => (
+        <Confetti
+          key={explosion.id}
+          width={window.innerWidth}
+          height={window.innerHeight}
+          numberOfPieces={150}
+          recycle={false}
+          initialVelocityY={15}
+          confettiSource={{
+            x: explosion.x,
+            y: explosion.y,
+            w: 0,
+            h: 0,
           }}
-        ></div>
-        <div
-          id="circle3"
-          draggable
-          onDragStart={(e) => handleDragStart(e, "circle3")}
-          style={{
-            width: "100px",
-            height: "100px",
-            borderRadius: "50%",
-            backgroundColor: "#F4F6A7",
-            position: "absolute",
-            left: `${positions.circle3.x}px`,
-            top: `${positions.circle3.y}px`,
-          }}
-        ></div>
-      </div>
-      <button
-        style={{
-          marginTop: "2rem",
-          padding: "10px 20px",
-          fontSize: "1.2rem",
-          backgroundColor: "#4CAF50",
-          color: "white",
-          border: "none",
-          borderRadius: "5px",
-          cursor: "pointer",
-        }}
-        onClick={() => alert("Explore our unique fidget collection!")}
-      >
-        Explore Fidgets
-      </button>
+        />
+      ))}
     </div>
   );
 };
