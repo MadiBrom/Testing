@@ -15,13 +15,7 @@ const Navbar = () => {
           <Link to="/buttons">Buttons</Link>
         </li>
         <li>
-          <Link to="/bubbles">Bubbles</Link>
-        </li>
-        <li>
           <Link to="/birds">Birds</Link>
-        </li>
-        <li>
-          <Link to="/move">Move the Box</Link>
         </li>
       </ul>
     </>

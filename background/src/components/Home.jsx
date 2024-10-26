@@ -5,13 +5,13 @@ const Home = () => {
   const [circles, setCircles] = useState([]);
   const [offset, setOffset] = useState({ x: 0, y: 0 });
   const [confettiExplosions, setConfettiExplosions] = useState([]);
+  const [gradientPosition, setGradientPosition] = useState({ x: 50, y: 50 });
 
   useEffect(() => {
     // Spawn the initial circle in the center
     spawnCircle();
   }, []);
 
-  // Helper function to generate a random hex color
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
     let color = "#";
@@ -71,22 +71,61 @@ const Home = () => {
     spawnCircle();
   };
 
+  const handleMouseMove = (e) => {
+    const x = (e.clientX / window.innerWidth) * 100;
+    const y = (e.clientY / window.innerHeight) * 100;
+    setGradientPosition({ x, y });
+  };
+
+  const styles = {
+    container: {
+      textAlign: "center",
+      padding: "2rem",
+      fontFamily: "Arial, sans-serif",
+      height: "100vh",
+      position: "relative",
+      overflow: "hidden",
+    },
+    h1: {
+      fontSize: "3rem",
+      fontFamily: "'Rubik Wet Paint', system-ui",
+      fontWeight: "400",
+      color: "transparent",
+      backgroundImage:
+        "linear-gradient(90deg, #ff0000, #ff6b6b, #ffd700, #1e90ff, #a020f0, #ff4500, #ff0000)",
+      backgroundClip: "text",
+      WebkitBackgroundClip: "text",
+      backgroundSize: "200% 200%",
+      backgroundPosition: `${gradientPosition.x}% ${gradientPosition.y}%`,
+      transition: "background-image 0.5s ease, transform 0.3s ease",
+      cursor: "pointer",
+    },
+    circle: {
+      width: "100px",
+      height: "100px",
+      borderRadius: "50%",
+      position: "absolute",
+      cursor: "grab",
+    },
+    p: {
+      color: "white",
+      fontSize: "1.6rem",
+    },
+  };
+
   return (
     <div
       className="home-container"
       onDragOver={handleDragOver}
       onDrop={handleDrop}
-      style={{
-        textAlign: "center",
-        padding: "2rem",
-        fontFamily: "Arial, sans-serif",
-        height: "100vh",
-        position: "relative",
-        overflow: "hidden",
-      }}
+      style={styles.container}
     >
-      <h1>Discover the Ultimate Interactive Fidget Playground!</h1>
-      <p>Click, drag, and explore endless fidget possibilities.</p>
+      <h1 onMouseMove={handleMouseMove} style={styles.h1}>
+        Discover the Ultimate Interactive Fidget Playground!
+      </h1>
+      <p style={styles.p}>
+        Click, drag, and explore endless fidget possibilities.
+      </p>
 
       {circles.map((circle) => (
         <div
@@ -95,11 +134,8 @@ const Home = () => {
           draggable
           onDragStart={(e) => handleDragStart(e, circle.id)}
           style={{
-            width: "100px",
-            height: "100px",
-            borderRadius: "50%",
+            ...styles.circle,
             backgroundColor: circle.color,
-            position: "absolute",
             left: `${circle.x}px`,
             top: `${circle.y}px`,
           }}
