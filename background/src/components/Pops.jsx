@@ -5,7 +5,32 @@ const Pops = () => {
   const [pops, setPops] = useState([]);
 
   useEffect(() => {
-    const popCount = 50; // Number of pops
+    const popCount = 20; // Initial number of pops
+    const spawnInterval = 2000; // Interval time in milliseconds to create new pops
+
+    // Function to generate a random gradient with transparency
+    const generateRandomGradient = () => {
+      const colors = [
+        "rgba(255, 154, 158, 0.7)",
+        "rgba(250, 208, 196, 0.7)",
+        "rgba(173, 216, 230, 0.7)",
+        "rgba(248, 194, 235, 0.7)",
+        "rgba(161, 140, 209, 0.7)",
+        "rgba(248, 194, 235, 0.7)",
+        "rgba(143, 211, 244, 0.7)",
+        "rgba(132, 250, 176, 0.7)",
+        "rgba(207, 217, 223, 0.7)",
+        "rgba(161, 196, 253, 0.7)",
+        "rgba(250, 232, 171, 0.7)",
+        "rgba(255, 221, 225, 0.7)",
+        "rgba(212, 252, 121, 0.7)",
+        "rgba(150, 230, 161, 0.7)",
+      ];
+      const randomColor1 = colors[Math.floor(Math.random() * colors.length)];
+      const randomColor2 = colors[Math.floor(Math.random() * colors.length)];
+      const angle = Math.floor(Math.random() * 360);
+      return `linear-gradient(${angle}deg, ${randomColor1}, ${randomColor2})`;
+    };
 
     // Function to create a new pop
     const createPop = (offScreen = false) => {
@@ -21,11 +46,13 @@ const Pops = () => {
           ? -size
           : window.innerHeight + size
         : Math.random() * window.innerHeight;
+      const gradient = generateRandomGradient(); // Random gradient for each pop
       const pop = {
         id,
         size,
         x: initialX,
         y: initialY,
+        gradient, // Store gradient in the pop object
         velocityX: (Math.random() * 2 - 1) * 0.2,
         velocityY: (Math.random() * 2 - 1) * 0.2,
         popped: false,
@@ -60,8 +87,14 @@ const Pops = () => {
 
     updatePositions();
 
+    // Create new pops every `spawnInterval` milliseconds
+    const intervalId = setInterval(() => {
+      createPop(true); // Spawn a new pop off-screen
+    }, spawnInterval);
+
     return () => {
-      setPops([]); // Clear pops when component unmounts
+      clearInterval(intervalId); // Clear the interval when the component unmounts
+      setPops([]); // Clear pops
     };
   }, []);
 
@@ -88,12 +121,15 @@ const Pops = () => {
             left: pop.x,
             top: pop.y,
             position: "absolute",
-            backgroundColor: "rgba(173, 216, 230, 0.7)",
+            background: pop.gradient, // Apply the gradient as background
             borderRadius: "50%",
-            boxShadow: "0 0 8px rgba(173, 216, 230, 0.5)",
-            transform: pop.popped ? "scale(0)" : "scale(1)",
+            boxShadow: "0 0 8px rgba(0, 0, 0, 0.2)",
+            transform: pop.popped ? "scale(1.2)" : "scale(1)",
             opacity: pop.popped ? 0 : 1,
-            transition: "transform 0.3s ease-out, opacity 0.3s ease-out",
+            transition: "transform 0.15s ease-out, opacity 0.15s ease-out",
+            zIndex: 2,
+            cursor: "pointer",
+            pointerEvents: "auto",
           }}
           onClick={() => handlePop(pop.id)}
         />
@@ -105,13 +141,12 @@ const Pops = () => {
           left: 0;
           width: 100%;
           height: 100vh;
-          z-index: -1;
+          z-index: 1;
           pointer-events: none;
         }
 
         .pop {
-          cursor: pointer;
-          pointer-events: auto; /* Make sure clicks are registered */
+          pointer-events: auto;
         }
       `}</style>
     </div>
