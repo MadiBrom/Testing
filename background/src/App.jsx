@@ -6,6 +6,7 @@ import Buttons from "./components/buttons/Buttons";
 import Birds from "./components/Birds";
 import Home from "./components/Home";
 import Pops from "./components/Pops";
+import Lines from "./components/Lines";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
         <Route path="/buttons" element={<Buttons />} />
         <Route path="/birds" element={<Birds />} />
         <Route path="/pops" element={<Pops />} />
+        <Route path="/lines" element={<Lines />} />
       </Routes>
     </div>
   );
