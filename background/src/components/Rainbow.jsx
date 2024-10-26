@@ -1,6 +1,6 @@
 import React, { useRef, useEffect } from "react";
 
-const Rainbow = () => {
+const Ocean = () => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -64,4 +64,4 @@ const Rainbow = () => {
   return <canvas ref={canvasRef} className="ocean-canvas" />;
 };
 
-export default Rainbow;
+export default Ocean;

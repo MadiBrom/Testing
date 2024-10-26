@@ -9,6 +9,7 @@ import Pops from "./components/Pops";
 import Lines from "./components/Lines";
 import Ocean from "./components/Ocean";
 import Rainbow from "./components/Rainbow";
+import Drips from "./components/Drips";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
         <Route path="/lines" element={<Lines />} />
         <Route path="/ocean" element={<Ocean />} />
         <Route path="/rainbow" element={<Rainbow />} />
+        <Route path="/drips" element={<Drips />} />
       </Routes>
     </div>
   );

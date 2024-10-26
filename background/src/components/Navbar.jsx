@@ -160,6 +160,14 @@ const Navbar = () => {
                   Rainbow
                 </Link>
               </li>
+              <li style={{ padding: "0.5rem 1rem" }}>
+                <Link
+                  to="/drips"
+                  style={{ color: "#fff", textDecoration: "none" }}
+                >
+                  Drips
+                </Link>
+              </li>
             </ul>
           )}
         </li>
