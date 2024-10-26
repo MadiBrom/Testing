@@ -1,7 +1,6 @@
 import React, { useRef, useEffect } from "react";
-import "./ocean.css"; // Adjust the path if necessary
 
-const Ocean = () => {
+const Rainbow = () => {
   const canvasRef = useRef(null);
 
   useEffect(() => {
@@ -65,4 +64,4 @@ const Ocean = () => {
   return <canvas ref={canvasRef} className="ocean-canvas" />;
 };
 
-export default Ocean;
+export default Rainbow;

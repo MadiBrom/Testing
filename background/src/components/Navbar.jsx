@@ -152,6 +152,14 @@ const Navbar = () => {
                   Ocean
                 </Link>
               </li>
+              <li style={{ padding: "0.5rem 1rem" }}>
+                <Link
+                  to="/rainbow"
+                  style={{ color: "#fff", textDecoration: "none" }}
+                >
+                  Rainbow
+                </Link>
+              </li>
             </ul>
           )}
         </li>

@@ -7,7 +7,8 @@ import Birds from "./components/Birds";
 import Home from "./components/Home";
 import Pops from "./components/Pops";
 import Lines from "./components/Lines";
-import Ocean from "./components/water/Ocean";
+import Ocean from "./components/Ocean";
+import Rainbow from "./components/Rainbow";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
         <Route path="/pops" element={<Pops />} />
         <Route path="/lines" element={<Lines />} />
         <Route path="/ocean" element={<Ocean />} />
+        <Route path="/rainbow" element={<Rainbow />} />
       </Routes>
     </div>
   );
