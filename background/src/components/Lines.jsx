@@ -103,7 +103,10 @@ const Lines = () => {
   }, [stars]);
 
   return (
-    <canvas ref={canvasRef} style={{ position: "fixed", top: 0, left: 0 }} />
+    <canvas
+      ref={canvasRef}
+      style={{ position: "fixed", top: 0, left: 0, pointerEvents: "none" }}
+    />
   );
 };
 
