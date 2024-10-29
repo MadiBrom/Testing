@@ -38,6 +38,24 @@ const Drips = () => {
     // Generate ripples at regular intervals (simulating raindrops)
     const dropInterval = setInterval(createRipples, 100); // Adjust interval for more or fewer drops
 
+    // Function to handle mouse clicks and add a larger ripple
+    function handleClick(event) {
+      const rect = canvas.getBoundingClientRect();
+      const x = event.clientX - rect.left;
+      const y = event.clientY - rect.top;
+
+      const largeRipple = {
+        x: x,
+        y: y,
+        radius: 10, // Starting radius for large drip
+        alpha: 0.8, // Starting opacity for the large drip
+      };
+
+      setRipples((prevRipples) => [...prevRipples, largeRipple]);
+    }
+
+    canvas.addEventListener("click", handleClick);
+
     function draw() {
       ctx.clearRect(0, 0, width, height);
 
@@ -68,6 +86,7 @@ const Drips = () => {
     return () => {
       window.removeEventListener("resize", resizeCanvas);
       clearInterval(dropInterval);
+      canvas.removeEventListener("click", handleClick);
     };
   }, [ripples]);
 
