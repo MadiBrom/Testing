@@ -168,6 +168,14 @@ const Navbar = () => {
                   Drips
                 </Link>
               </li>
+              {/* <li>
+                <Link
+                  to="/spiral"
+                  style={{ color: "#fff", textDecoration: "none" }}
+                >
+                  Spiral
+                </Link>
+              </li> */}
             </ul>
           )}
         </li>

@@ -10,6 +10,7 @@ import Lines from "./components/Lines";
 import Ocean from "./components/Ocean";
 import Rainbow from "./components/Rainbow";
 import Drips from "./components/Drips";
+import Spiral from "./components/Spiral";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route path="/ocean" element={<Ocean />} />
         <Route path="/rainbow" element={<Rainbow />} />
         <Route path="/drips" element={<Drips />} />
+        <Route path="/spiral" element={<Spiral />} />
       </Routes>
     </div>
   );
