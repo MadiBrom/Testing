@@ -89,16 +89,41 @@ const Lines = () => {
       draw(mouseX, mouseY); // Redraw with updated positions
     };
 
+    const handleTouchMove = (event) => {
+      const touch = event.touches[0]; // Get the first touch
+      draw(touch.clientX, touch.clientY);
+    };
+
+    const handleTouchStart = (event) => {
+      const touch = event.touches[0]; // Get the first touch
+      draw(touch.clientX, touch.clientY);
+    };
+
     window.addEventListener("mousemove", handleMouseMove);
     window.addEventListener("click", handleMouseClick);
+    window.addEventListener("touchmove", handleTouchMove, { passive: true });
+    window.addEventListener("touchstart", handleTouchStart, { passive: true });
 
     // Set canvas dimensions
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    const setCanvasSize = () => {
+      const width = window.innerWidth;
+      const height = window.innerHeight;
+      const dpr = window.devicePixelRatio || 1; // Device pixel ratio
+
+      canvas.width = width * dpr;
+      canvas.height = height * dpr;
+      context.scale(dpr, dpr); // Adjust for pixel density
+    };
+
+    setCanvasSize(); // Set initial size
+    window.addEventListener("resize", setCanvasSize); // Handle resize
 
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("click", handleMouseClick);
+      window.removeEventListener("touchmove", handleTouchMove);
+      window.removeEventListener("touchstart", handleTouchStart);
+      window.removeEventListener("resize", setCanvasSize);
     };
   }, [stars]);
 
